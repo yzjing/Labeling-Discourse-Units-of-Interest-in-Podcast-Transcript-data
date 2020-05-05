@@ -1,0 +1,42 @@
+\section{Results}\label{sec:results}
+
+
+\begin{table*}[h]
+\begin{center}
+\begin{tabular}{cccccc} 
+\hline
+\diagbox{Accuracy}{Offset} & 0 & 1 & 3 & 5 & 9\\
+\hline
+&&\multicolumn{2}{c}{NeurIPS task}&& \\
+
+Fine-tuned BERT & 0.807 & 0.894 & 0.974 & 0.989 & \textbf{1.0}   \\
+Bi-LSTM & \textbf{0.994} &  \textbf{0.997}  & \textbf{0.997} & \textbf{0.997} & 0.997 \\
+Embedding model & 0.208 & 0.636 & 0.720  & 0.760 & 0.796   \\
+\hline
+&\multicolumn{3}{r}{Podcast task: seen(unseen)}&& \\
+Fine-tuned BERT & \textbf{0.256(0.0)} & 0.282(0.0) & \textbf{0.410(0.179)} & \textbf{0.462(0.428)} & \textbf{0.538(0.464)} \\
+Bi-LSTM & 0.0(0.0) & \textbf{0.333(0.0)} & 0.333(0.036) & 0.359(0.071) & 0.461(0.107)\\
+Embedding model & 0.026(0.0) & 0.102(0.0) & 0.128(0.0) & 0.231(0.036) & 0.256(0.036) \\
+\hline
+\end{tabular}
+\caption{Accuracy versus offset, where the offset is how many tokens there are between the predicted position and the true position. For Podcast Introductions, the results on test set of unseen programs are shown in parenthesis.}
+\label{table:start_acc}
+\end{center}
+\end{table*}
+
+ 
+We first show the alignment between the models' predictions and the ground truth. Figure \ref{fig:score_dist} shows four examples of our models' predictions. A model is performing well if its predictions align well with the ground truth. In general, all models are able to correctly label some blocks of text. In Figure \ref{fig:score_dist_bert_abstract}, the fine-tuned BERT model is able to cleanly separate the abstract and body text, despite incorrectly labeling one token in body text with high \texttt{Is-abstract} probability. In Figure \ref{fig:score_dist_bert_intro}, the model identifies the podcast introduction with a high accuracy. Similarly, in Figure \ref{fig:score_dist_lstm}, the Bi-LSTM model labels the introduction correctly, but also labels a non-relevant block of text with high \texttt{Is-intro} probability. In Figure \ref{fig:score_dist_embedding}, the embedding-based baseline appears to have more false positives, predicting more high \texttt{Is-intro} scores beyond the end of the true introduction.
+
+With a general understanding of the models' behaviour, we formally evaluate our model's performance by two metrics inspired by the practice in \citet{rajpurkar2016squad}. First, we examine the accuracy in predicting the segmentation boundaries. We consider the accuracy in regard to given offsets, i.e. how far away the predicted boundary is from the ground truth. For the abstract segmentation task, we focus on the boundary between the abstract and body text. In the introduction segmentation task, we focus on the introduction start position, as it is often more useful to identify the start of introduction than the end. The accuracy corresponding to varied offset is shown in Table \ref{table:start_acc}. 
+
+We found that all models perform well in the NeurIPS task. While the Bi-LSTM model achieves very high accuracy with offset $=$ 0 (i.e. exactly correct prediction), the fine-tuned BERT model has a slight advantage with a larger offset, reaching 100\% accuracy at offset $=$ 9. Both models outperform the lexical baseline by over 20\%. In the Podcast task, the fine-tuned BERT model generally outperforms the Bi-LSTM model as well as the baseline both on the test set with seen programs and that with unseen programs. At offset $=$ 0, it is able to achieve over 25\% accuracy on test set with seen programs, and over 53\% accuracy with offset $=$ 9. On the test set of unseen programs, it is the only model to achieve over 40\% accuracy with offset $=$ 9. We notice that while the Bi-LSTM model's performance is close to the BERT model on the test set with seen programs, and even overtakes BERT in one case, its accuracy is much lower on the test set with unseen programs.
+
+
+ We also evaluate performance on the Podcast task with an additional metric---the overlap between the predicted introduction and true introduction on a token level. Because good predicted introductions need to not only contain the right tokens, but also be at the correct position, it is not suitable to compute the F1 score using a bag-of-tokens model. We compute the overlap score as:
+
+\begin{equation}
+S = \frac{\textrm{predicted intro} \cap \textrm{true intro} }{\textrm{predicted intro} \cup\textrm{true intro}}
+\end{equation}
+
+The overlap score distribution of our models are summarized in Figure \ref{fig:overlap_swarm}. We found that all models' results have a number of episodes with 0 overlap score, which is often caused by the models being unable to find the start or end of introduction in a document. Meanwhile, in both of the test sets, the fine-tuned BERT model has the largest number of episodes with non-zero overlap scores, and has a much higher median and $75^{th}$ percentile score than the other two models, as well as a number of episodes with near 1.0 overlap score. The Bi-LSTM model outperforms the baseline on the test set of seen programs, but its performance is not significantly different from the baseline on that of unseen programs.
+

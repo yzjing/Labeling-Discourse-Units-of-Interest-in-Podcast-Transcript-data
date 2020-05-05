@@ -1,0 +1,123 @@
+%
+% File acl2020.tex
+%
+%% Based on the style files for ACL 2020, which were
+%% Based on the style files for ACL 2018, NAACL 2018/19, which were
+%% Based on the style files for ACL-2015, with some improvements
+%%  taken from the NAACL-2016 style
+%% Based on the style files for ACL-2014, which were, in turn,
+%% based on ACL-2013, ACL-2012, ACL-2011, ACL-2010, ACL-IJCNLP-2009,
+%% EACL-2009, IJCNLP-2008...
+%% Based on the style files for EACL 2006 by 
+%%e.agirre@ehu.es or Sergi.Balari@uab.es
+%% and that of ACL 08 by Joakim Nivre and Noah Smith
+
+\documentclass[11pt,a4paper]{article}
+\usepackage[hyperref]{acl2020}
+\usepackage{times}
+\usepackage{latexsym}
+\renewcommand{\UrlFont}{\ttfamily\small}
+\usepackage{graphicx}
+\graphicspath{ {./figs/} }
+% \usepackage{caption}
+\usepackage{subcaption}
+\usepackage{diagbox}
+\usepackage[export]{adjustbox}
+
+
+% \special{papersize=210mm,297mm}
+
+% This is not strictly necessary, and may be commented out,
+% but it will improve the layout of the manuscript,
+% and will typically save some space.
+\usepackage{microtype}
+
+%\aclfinalcopy % Uncomment this line for the final submission
+\def\aclpaperid{2099} %  Enter the acl Paper ID here
+
+%\setlength\titlebox{5cm}
+% You can expand the titlebox if you need extra space
+% to show all the authors. Please do not make the titlebox
+% smaller than 5cm (the original size); we will check this
+% in the camera-ready version and ask you to change it back.
+
+\newcommand\BibTeX{B\textsc{ib}\TeX}
+
+\title{Labeling Macro-level Discourse Structure in Podcast Transcripts with Deep Neural Networks}
+
+\author{Elise Jing \\
+  Indiana University Bloomington / 107 S. Indiana Avenue, Bloomington, IN \\
+  \texttt{jingy@indiana.edu} \\\And
+  Kristiana Schneck\\
+  Pandora Media, Inc. / 2100 Franklin St #700, Oakland, CA \\
+  \texttt{kschneck@pandora.com} \\\And
+  Scott A. Waterman \\
+    Pandora Media, Inc. / 2100 Franklin St #700, Oakland, CA \\
+  \texttt{swaterman@pandora.com}\\} 
+
+\date{}
+
+\begin{document}
+\maketitle
+\begin{abstract}
+Identifying high-level structure in a long discourse is an important challenge for natural language processing (NLP), as it allows extraction of functionally meaningful and coherent units from text data. Here we study the problem of segmenting text based on discourse structure. We test two methods based on the current state-of-the-art techniques: a bi-directional long short-term memory (Bi-LSTM) network and a fine-tuned BERT \shortcite{devlin2018bert} model. After establishing our methods' viability on the task of segmenting the abstract from academic papers, we apply our methods to the segmentation of podcast introductions, which can be a crucial step to automatically manage podcast content. We report that our models achieve strong performance in both tasks compared with a token-oriented baseline. In particular, the fine-tuned BERT significantly outperforms the others in the more difficult podcast segmentation task, suggesting that the model is able to capture generalizable structural information from noisy, loosely-organized speech data. This conclusion is further demonstrated through an analysis of the model's inner architecture.
+\end{abstract}
+
+% , we demonstrate that the BERT model is able to learn information about macro-level discourse structure from input texts
+
+\input{intro}
+
+\input{related_work}
+
+\input{data}
+
+\input{approach}
+
+\input{results}
+
+\input{analysis}
+
+\input{discussion}
+
+%\section{Appendices}
+% \label{sec:appendix}
+
+
+%\section{Supplemental Material}
+% \label{sec:supplemental}
+
+
+\bibliographystyle{acl-natbib}
+\bibliography{intro_draft.bib}
+
+\end{document}
+
+
+\begin{table}
+\centering
+\begin{tabular}{lrl}
+\hline \textbf{Type of Text} & \textbf{Font Size} & \textbf{Style} \\ \hline
+paper title & 15 pt & bold \\
+author names & 12 pt & bold \\
+author affiliation & 12 pt & \\
+the word ``Abstract'' & 12 pt & bold \\
+section titles & 12 pt & bold \\
+subsection titles & 11 pt & bold \\
+document text & 11 pt  &\\
+captions & 10 pt & \\
+abstract text & 10 pt & \\
+bibliography & 10 pt & \\
+footnotes & 9 pt & \\
+\hline
+\end{tabular}
+\caption{\label{font-table} Font guide. }
+\end{table}
+
+
+
+\paragraph{\LaTeX-specific details:}
+Table~\ref{citation-guide} shows the syntax supported by the style files.
+We encourage you to use the natbib styles.
+You can use the command {\small\verb|\citet|} (cite in text) to get ``author (year)'' citations as in \citet{Gusfield:97}.
+You can use the command {\small\verb|\citep|} (cite in parentheses) to get ``(author, year)'' citations as in \citep{Gusfield:97}.
+You can use the command {\small\verb|\citealp|} (alternative cite without  parentheses) to get ``author year'' citations (which is useful for  using citations within parentheses, as in \citealp{Gusfield:97}).
